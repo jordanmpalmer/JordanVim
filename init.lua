@@ -43,6 +43,7 @@ require('lazy').setup({ { import = 'plugins' }, { import = 'plugins.lsp' } }, {
    },
 })
 
+vim.opt.termguicolors = true
 if vim.fn.has 'termguicolors' == 1 then
    vim.opt.termguicolors = true
 end
