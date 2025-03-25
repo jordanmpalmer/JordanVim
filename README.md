@@ -15,23 +15,24 @@ With a focus on customization and flexibility, JordanVim empowers users to harne
 
 **[Win32Yank](https://github.com/equalsraf/win32yank)** is a powerful utility that enables seamless synchronization between your Vim/Neovim clipboard and the Windows system clipboard. To set up this tool effectively, some modifications are necessary depending on your system configuration.
 
-Begin by downloading the latest version of **[win32yank-x64.zip](https://github.com/equalsraf/win32yank/releases)**. Once downloaded, extract the contents of the zip file and save the `win32yank.exe` file in a permanent location. For example, you might choose to save it in a dedicated folder within your Documents directory, such as **WSLPlugins**.
+Begin by downloading the latest version of **[win32yank-x64.zip](https://github.com/equalsraf/win32yank/releases)**. Once downloaded, extract the contents of the zip file and save the `win32yank.exe` file in a permanent location. By default it is set to a dedicated folder within the Public Users directory called **WSLPlugins**.
 
-Next, locate the `init.lua` file in your Neovim configuration directory, typically found at `~/.config/nvim`. In this file, you will need to modify the following code snippet to reflect the path where you saved `win32yank.exe`. Ensure that the path is formatted to navigate through the Windows file system mount in Linux (i.e., /mnt). 
+If using a custom location, locate the `init.lua` file in your Neovim configuration directory, typically found at `~/.config/nvim`. In this file, you will need to modify the following code snippet to reflect the path where you saved `win32yank.exe`. Ensure that the path is formatted to navigate through the Windows file system mount in Linux (i.e., /mnt). 
 
 ```lua
+local win32yank_path = '/mnt/c/Users/Public/WSLPlugins/win32yank.exe'
 vim.o.clipboard = 'unnamedplus'
 vim.g.clipboard = {
-name = 'win32yank-wsl',
-copy = {
-['+'] = '/mnt/c/Users/jorda/OneDrive/Documents/WSLPlugins/win32yank.exe -i --crlf',
-['*'] = '/mnt/c/Users/jorda/OneDrive/Documents/WSLPlugins/win32yank.exe -i --crlf',
-},
-paste = {
-['+'] = '/mnt/c/Users/jorda/OneDrive/Documents/WSLPlugins/win32yank.exe -o --lf',
-['*'] = '/mnt/c/Users/jorda/OneDrive/Documents/WSLPlugins/win32yank.exe -o --lf',
-},
-cache_enabled = 0,
+   name = 'win32yank-wsl',
+   copy = {
+      ['+'] = win32yank_path .. ' -i --crlf',
+      ['*'] = win32yank_path .. ' -i --crlf',
+   },
+   paste = {
+      ['+'] = win32yank_path .. ' -o --lf',
+      ['*'] = win32yank_path .. ' -o --lf',
+   },
+   cache_enabled = 0,
 }
 ```
 
