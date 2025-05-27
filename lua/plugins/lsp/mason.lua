@@ -32,6 +32,7 @@ return {
             'html',
             'cssls',
             'tailwindcss',
+            'terraformls',
             'svelte',
             'lua_ls',
             'graphql',
