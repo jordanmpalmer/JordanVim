@@ -77,6 +77,14 @@ return {
          vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
       end
 
+      vim.diagnostic.config {
+         virtual_lines = {
+            current_line = true,
+         },
+         -- virtual_text = { current_line = true },
+      }
+
+      --      vim.keymap.set('', '<leader>l', require('lsp_lines').toggle, { desc = 'Toggle lsp_lines' })
       -- mason_lspconfig.setup_handlers {
       --    -- default handler for installed servers
       --    function(server_name)
