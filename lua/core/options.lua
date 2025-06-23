@@ -34,9 +34,9 @@ end)
 opt.breakindent = true
 
 -- Tab settings
-opt.tabstop = 3 -- 3 spaces for tabs
-opt.softtabstop = 3 --
-opt.shiftwidth = 3 -- 3 spaces for indent width
+opt.tabstop = 4 -- 4 spaces for tabs
+opt.softtabstop = 4 --
+opt.shiftwidth = 4 -- 4 spaces for indent width
 opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy ident from current line when starting new one
 
