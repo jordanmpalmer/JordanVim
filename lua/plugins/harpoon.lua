@@ -31,5 +31,13 @@ return {
       vim.keymap.set('n', '<leader>rp', function()
          ui.nav_file(4)
       end, { desc = 'Navigate to Harpoon file 4' })
+
+      vim.keymap.set('n', '<leader>rc', function()
+         ui.nav_file(5)
+      end, { desc = 'Navigate to Harpoon file 5' })
+
+      vim.keymap.set('n', '<leader>rd', function()
+         ui.nav_file(6)
+      end, { desc = 'Navigate to Harpoon file 6' })
    end,
 }
