@@ -7,11 +7,9 @@ return {
       'windwp/nvim-ts-autotag',
    },
    config = function()
-      -- import nvim-treesitter plugin
-      local treesitter = require 'nvim-treesitter.configs'
-
       -- configure treesitter
-      treesitter.setup { -- enable syntax highlighting
+      ---@diagnostic disable-next-line: missing-fields
+      require('nvim-treesitter.config').setup { -- enable syntax highlighting
          highlight = {
             enable = true,
          },
@@ -43,6 +41,8 @@ return {
             'query',
             'vimdoc',
             'c',
+            'go',
+            'python',
          },
          incremental_selection = {
             enable = true,

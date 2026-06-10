@@ -4,7 +4,7 @@ return {
       'folke/tokyonight.nvim',
       lazy = true,
       opts = {
-         style = 'night', -- 'moon' or 'night'
+         style = 'moon', -- 'moon' or 'night'
          transparent = true,
          on_colors = function(colors)
             -- Make the status line background transparent
@@ -12,6 +12,11 @@ return {
             colors.bg_sidebar = 'none' -- You can also make sidebars transparent
             colors.bg_float = 'none' -- And make floating windows transparent
             colors.bg_bufferline = 'none' -- Specific transparency setting for bufferline
+            colors.fg_gutter = '#606979'
+         end,
+         on_highlights = function(hl, _)
+            hl.NvimTreeLineNr = { fg = '#999999' }
+            hl.NvimTreeCursorLineNr = { fg = '#999999' }
          end,
          styles = {
             sidebars = 'transparent',

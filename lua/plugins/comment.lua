@@ -1,20 +1,11 @@
--- Use to comment out code, use gc to start a comment, gcc for single line comment
+-- Neovim 0.12+ has native commenting (gc/gcc) built-in.
+-- Using ts_context_commentstring for proper JSX/TSX/multi-language support.
 return {
-   'numToStr/Comment.nvim',
+   'JoosepAlviste/nvim-ts-context-commentstring',
    event = { 'BufReadPre', 'BufNewFile' },
-   dependencies = {
-      'JoosepAlviste/nvim-ts-context-commentstring',
-   },
    config = function()
-      -- import comment plugin safely
-      local comment = require 'Comment'
-
-      local ts_context_commentstring = require 'ts_context_commentstring.integrations.comment_nvim'
-
-      -- enable comment
-      comment.setup {
-         -- for commenting tsx, jsx, svelte, html files
-         pre_hook = ts_context_commentstring.create_pre_hook(),
+      require('ts_context_commentstring').setup {
+         enable_autocmd = true,
       }
    end,
 }

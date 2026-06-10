@@ -44,12 +44,12 @@ return {
 
       mason_tool_installer.setup {
          ensure_installed = {
-            'prettier', -- prettier formatter
-            'stylua', -- lua formatter
-            'isort', -- python formatter
-            'black', -- python formatter
-            'pylint', -- python linter
-            'eslint_d', -- js linter
+            { 'prettier', version = '3.8.1' }, -- prettier formatter (2026-01-21)
+            { 'stylua', version = '2.0.1' }, -- lua formatter
+            { 'isort', version = '6.0.1' }, -- python formatter
+            { 'black', version = '25.1.0' }, -- python formatter
+            { 'pylint', version = '3.3.6' }, -- python linter
+            { 'eslint_d', version = '14.3.0' }, -- js linter (2024-12-19)
          },
       }
    end,
