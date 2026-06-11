@@ -1,0 +1,31 @@
+-- Makes tabs look better
+return {
+   'akinsho/bufferline.nvim',
+   dependencies = {},
+   version = '*',
+   config = function()
+      local highlights = {}
+      local ok, tokyonight_bl = pcall(function()
+         return require("tokyonight.integrations.bufferline").get()
+      end)
+      if ok then
+         highlights = tokyonight_bl
+      end
+
+      require("bufferline").setup({
+         options = {
+            mode = 'buffers',
+            separator_style = 'thin',
+            offsets = {
+               {
+                  filetype = "snacks_layout_box",
+                  text = "Explorer",
+                  highlight = "Directory",
+                  text_align = "left",
+               },
+            },
+         },
+         highlights = highlights,
+      })
+   end,
+}

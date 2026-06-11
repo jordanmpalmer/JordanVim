@@ -80,3 +80,23 @@ opt.signcolumn = 'yes' -- show sign column so that text doesn't shift
 
 -- backspace
 opt.backspace = 'indent,eol,start' -- allow backspace on indent, end of line, or insert mode start position
+
+-- Additional quality-of-life options
+opt.autowrite = true -- Auto-save when switching buffers or running :make
+opt.confirm = true -- Ask to save instead of erroring on unsaved changes
+opt.smartindent = true -- Better auto-indenting for C-like languages
+opt.shiftround = true -- Round indent to nearest shiftwidth multiple
+opt.linebreak = true -- Wrap at word boundaries when wrap is on
+opt.wrap = false -- Disable line wrap
+opt.laststatus = 3 -- Global statusline (one for all splits)
+opt.sidescrolloff = 8 -- Horizontal cursor padding
+opt.undolevels = 10000 -- More undo history
+opt.virtualedit = 'block' -- Cursor can go past end of line in visual-block
+opt.wildmode = 'longest:full,full' -- Better command-line tab completion
+opt.grepprg = 'rg --vimgrep' -- Use ripgrep for :grep
+opt.grepformat = '%f:%l:%c:%m' -- Parse ripgrep output
+opt.pumheight = 10 -- Limit autocomplete popup height
+opt.smoothscroll = false -- Smooth scrolling (Neovim 0.10+)
+opt.splitkeep = 'screen' -- Keep text position when opening/closing splits
+opt.foldmethod = 'indent' -- Fold by indentation
+opt.foldlevel = 99 -- All folds open by default

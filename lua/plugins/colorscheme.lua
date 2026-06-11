@@ -1,5 +1,34 @@
--- color scheme for nvim
+-- -- color scheme for nvim
+-- return {
+--    {
+--       'folke/tokyonight.nvim',
+--       lazy = true,
+--       opts = {
+--          style = 'moon', -- 'moon' or 'night'
+--          transparent = true,
+--          on_colors = function(colors)
+--             -- Make the status line background transparent
+--             colors.bg_statusline = 'none' -- This makes the status line transparent
+--             colors.bg_sidebar = 'none' -- You can also make sidebars transparent
+--             colors.bg_float = 'none' -- And make floating windows transparent
+--             colors.bg_bufferline = 'none' -- Specific transparency setting for bufferline
+--             colors.fg_gutter = '#606979'
+--          end,
+--          on_highlights = function(hl, _)
+--             hl.NvimTreeLineNr = { fg = '#999999' }
+--             hl.NvimTreeCursorLineNr = { fg = '#999999' }
+--          end,
+--          styles = {
+--             sidebars = 'transparent',
+--             floats = 'transparent',
+--          },
+--       },
+--    },
+-- }
+
 return {
+
+   -- tokyonight
    {
       'folke/tokyonight.nvim',
       lazy = true,
@@ -14,13 +43,63 @@ return {
             colors.bg_bufferline = 'none' -- Specific transparency setting for bufferline
             colors.fg_gutter = '#606979'
          end,
-         on_highlights = function(hl, _)
-            hl.NvimTreeLineNr = { fg = '#999999' }
-            hl.NvimTreeCursorLineNr = { fg = '#999999' }
-         end,
-         styles = {
-            sidebars = 'transparent',
-            floats = 'transparent',
+         -- styles = {
+         --    sidebars = 'transparent',
+         --    floats = 'transparent',
+         -- },
+      },
+   },
+
+   -- catppuccin
+   {
+      'catppuccin/nvim',
+      lazy = true,
+      name = 'catppuccin',
+      opts = {
+         lsp_styles = {
+            underlines = {
+               errors = { 'undercurl' },
+               hints = { 'undercurl' },
+               warnings = { 'undercurl' },
+               information = { 'undercurl' },
+            },
+         },
+         integrations = {
+            aerial = true,
+            alpha = true,
+            cmp = true,
+            dashboard = true,
+            flash = true,
+            fzf = true,
+            grug_far = true,
+            gitsigns = true,
+            headlines = true,
+            illuminate = true,
+            indent_blankline = { enabled = true },
+            leap = true,
+            lsp_trouble = true,
+            mason = true,
+            mini = true,
+            navic = { enabled = true, custom_bg = 'lualine' },
+            neotest = true,
+            neotree = true,
+            noice = true,
+            notify = true,
+            snacks = true,
+            telescope = true,
+            treesitter_context = true,
+            which_key = true,
+         },
+      },
+      specs = {
+         {
+            'akinsho/bufferline.nvim',
+            optional = true,
+            opts = function(_, opts)
+               if (vim.g.colors_name or ''):find 'catppuccin' then
+                  opts.highlights = require('catppuccin.special.bufferline').get_theme()
+               end
+            end,
          },
       },
    },

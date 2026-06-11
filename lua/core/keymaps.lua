@@ -5,61 +5,93 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-local keymap = vim.keymap -- for conciseness
+local keymap = vim.keymap
 
--- Map 'nn' in Insert mode to escape Insert mode (i.e., press Esc)
--- vim.api.nvim_set_keymap('i', 'nn', '<Esc>', { noremap = true })
-
-keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc = 'Back out of file' })
+-- better up/down on wrapped lines
+keymap.set({ 'n', 'x' }, 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
 keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
 keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true, desc = 'Line Diagnostics' })
+keymap.set('n', ']d', function()
+   vim.diagnostic.jump { count = 1, float = true }
+end, { desc = 'Next Diagnostic' })
+keymap.set('n', '[d', function()
+   vim.diagnostic.jump { count = -1, float = true }
+end, { desc = 'Prev Diagnostic' })
+keymap.set('n', ']e', function()
+   vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR, float = true }
+end, { desc = 'Next Error' })
+keymap.set('n', '[e', function()
+   vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR, float = true }
+end, { desc = 'Prev Error' })
 
+-- Move lines
+keymap.set('n', '<A-j>', '<cmd>m .+1<cr>==', { desc = 'Move Down' })
+keymap.set('n', '<A-k>', '<cmd>m .-2<cr>==', { desc = 'Move Up' })
+keymap.set('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi', { desc = 'Move Down' })
+keymap.set('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi', { desc = 'Move Up' })
 keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
 keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
 
--- show error on lsp line
-vim.api.nvim_set_keymap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+-- Undo break-points (undo per-sentence instead of entire insert)
+keymap.set('i', ',', ',<c-g>u')
+keymap.set('i', '.', '.<c-g>u')
+keymap.set('i', ';', ';<c-g>u')
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
+-- Save with ctrl+s from any mode
+keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
+
+-- Better indenting (keep selection)
+keymap.set('x', '<', '<gv')
+keymap.set('x', '>', '>gv')
+
+-- Saner n/N (always forward/backward regardless of / vs ?)
+keymap.set('n', 'n', "'Nn'[v:searchforward].'zv'", { expr = true, desc = 'Next Search Result' })
+keymap.set('n', 'N', "'nN'[v:searchforward].'zv'", { expr = true, desc = 'Prev Search Result' })
+
+-- Buffer navigation
+keymap.set('n', '<S-h>', '<cmd>bprevious<cr>', { desc = 'Prev Buffer' })
+keymap.set('n', '<S-l>', '<cmd>bnext<cr>', { desc = 'Next Buffer' })
+keymap.set('n', '<leader>bb', '<cmd>e #<cr>', { desc = 'Switch to Other Buffer' })
+
+-- Quickfix navigation
+keymap.set('n', '[q', vim.cmd.cprev, { desc = 'Previous Quickfix' })
+keymap.set('n', ']q', vim.cmd.cnext, { desc = 'Next Quickfix' })
+
+-- Resize splits with ctrl+arrows
+keymap.set('n', '<C-Up>', '<cmd>resize +2<cr>', { desc = 'Increase Window Height' })
+keymap.set('n', '<C-Down>', '<cmd>resize -2<cr>', { desc = 'Decrease Window Height' })
+keymap.set('n', '<C-Left>', '<cmd>vertical resize -2<cr>', { desc = 'Decrease Window Width' })
+keymap.set('n', '<C-Right>', '<cmd>vertical resize +2<cr>', { desc = 'Increase Window Width' })
+
+-- Exit terminal mode
 keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
--- keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
+-- Window navigation
 keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- increment/decrement numbers
--- keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment number
--- keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement number
+-- Window management
+keymap.set('n', '<leader>sv', '<C-w>v', { desc = 'Split window vertically' })
+keymap.set('n', '<leader>sh', '<C-w>s', { desc = 'Split window horizontally' })
+keymap.set('n', '<leader>se', '<C-w>=', { desc = 'Make splits equal size' })
+keymap.set('n', '<leader>sx', '<cmd>close<CR>', { desc = 'Close current split' })
 
--- window management
-keymap.set('n', '<leader>sv', '<C-w>v', { desc = 'Split window vertically' }) -- split window vertically
-keymap.set('n', '<leader>sh', '<C-w>s', { desc = 'Split window horizontally' }) -- split window horizontally
-keymap.set('n', '<leader>se', '<C-w>=', { desc = 'Make splits equal size' }) -- make split windows equal size width
-keymap.set('n', '<leader>sx', '<cmd>close<CR>', { desc = 'Close current split' }) -- close current split window
+-- Tabs
+keymap.set('n', '<leader>to', '<cmd>tabnew<CR>', { desc = 'Open new tab' })
+keymap.set('n', '<leader>tx', '<cmd>tabclose<CR>', { desc = 'Close current tab' })
+keymap.set('n', '<leader>tn', '<cmd>tabn<CR>', { desc = 'Go to next tab' })
+keymap.set('n', '<leader>tp', '<cmd>tabp<CR>', { desc = 'Go to previous tab' })
+keymap.set('n', '<leader>tf', '<cmd>tabnew %<CR>', { desc = 'Open current buffer in new tab' })
 
-keymap.set('n', '<leader>to', '<cmd>tabnew<CR>', { desc = 'Open new tab' }) -- open new tab
-keymap.set('n', '<leader>tx', '<cmd>tabclose<CR>', { desc = 'Close current tab' }) -- close current tab
-keymap.set('n', '<leader>tn', '<cmd>tabn<CR>', { desc = 'Go to next tab' }) -- go to next tab
-keymap.set('n', '<leader>tp', '<cmd>tabp<CR>', { desc = 'Go to previous tab' }) -- go to previous tab
-keymap.set('n', '<leader>tf', '<cmd>tabnew %<CR>', { desc = 'Open current buffer in new tab' }) -- open current buffer in new tab
+-- Git: go back to previous branch/HEAD
+keymap.set("n", "<leader>gr", "<cmd>!git checkout -<cr>", { desc = "Git checkout previous branch" })
+
+
