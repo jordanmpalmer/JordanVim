@@ -5,16 +5,7 @@ return {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
    },
    config = function()
-      -- import mason
-      local mason = require 'mason'
-
-      -- import mason-lspconfig
-      local mason_lspconfig = require 'mason-lspconfig'
-
-      local mason_tool_installer = require 'mason-tool-installer'
-
-      -- enable mason and configure icons
-      mason.setup {
+      require('mason').setup {
          ui = {
             icons = {
                package_installed = '✓',
@@ -24,11 +15,11 @@ return {
          },
       }
 
-      mason_lspconfig.setup {
-         -- list of servers for mason to install
+      require('mason-lspconfig').setup {
          ensure_installed = {
             'ts_ls',
             'gopls',
+            'clangd',
             'html',
             'cssls',
             'tailwindcss',
@@ -42,14 +33,14 @@ return {
          },
       }
 
-      mason_tool_installer.setup {
+      require('mason-tool-installer').setup {
          ensure_installed = {
-            { 'prettier', version = '3.8.1' }, -- prettier formatter (2026-01-21)
-            { 'stylua', version = '2.0.1' }, -- lua formatter
-            { 'isort', version = '6.0.1' }, -- python formatter
-            { 'black', version = '25.1.0' }, -- python formatter
-            { 'pylint', version = '3.3.6' }, -- python linter
-            { 'eslint_d', version = '14.3.0' }, -- js linter (2024-12-19)
+            { 'prettier', version = '3.8.1' },
+            { 'stylua', version = '2.0.1' },
+            { 'isort', version = '6.0.1' },
+            { 'black', version = '25.1.0' },
+            { 'pylint', version = '3.3.6' },
+            { 'eslint_d', version = '14.3.0' },
          },
       }
    end,

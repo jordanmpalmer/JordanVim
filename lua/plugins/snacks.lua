@@ -10,6 +10,14 @@ return {
             preset = 'default',
             layout = { reverse = true },
          },
+         sources = {
+            explorer = {
+               hidden = true,
+               win = {
+                  list = { wo = { number = true, relativenumber = true } },
+               },
+            },
+         },
       },
       terminal = { enabled = true },
       lazygit = { enabled = true },
@@ -105,5 +113,9 @@ return {
       vim.keymap.set('n', '<leader>ee', function()
          Snacks.explorer()
       end, { desc = 'Toggle file explorer' })
+      vim.keymap.set('n', '<leader>er', function()
+         Snacks.explorer()
+         Snacks.explorer()
+      end, { desc = 'Refresh file explorer' })
    end,
 }

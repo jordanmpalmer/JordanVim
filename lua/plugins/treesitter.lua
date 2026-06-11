@@ -1,26 +1,12 @@
--- better syntax highlighting, indentation, autotagging, incremental selection
+-- nvim-treesitter: parser installer and manager
+-- In nvim 0.12, highlighting/indent are built-in but must be enabled.
 return {
-   'nvim-treesitter/nvim-treesitter',
-   event = { 'BufReadPre', 'BufNewFile' },
-   build = ':TSUpdate',
-   dependencies = {
-      'windwp/nvim-ts-autotag',
-   },
-   config = function()
-      -- configure treesitter
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.config').setup { -- enable syntax highlighting
-         highlight = {
-            enable = true,
-         },
-         -- enable indentation
-         indent = { enable = true },
-         -- enable autotagging (w/ nvim-ts-autotag plugin)
-         autotag = {
-            enable = true,
-         },
-         -- ensure these language parsers are installed
-         ensure_installed = {
+   {
+      'nvim-treesitter/nvim-treesitter',
+      event = { 'BufReadPre', 'BufNewFile' },
+      build = ':TSUpdate',
+      config = function()
+         require('nvim-treesitter.install').install {
             'json',
             'javascript',
             'typescript',
@@ -41,18 +27,29 @@ return {
             'query',
             'vimdoc',
             'c',
+            'cpp',
             'go',
             'python',
-         },
-         incremental_selection = {
-            enable = true,
-            keymaps = {
-               init_selection = '<C-space>',
-               node_incremental = '<C-space>',
-               scope_incremental = false,
-               node_decremental = '<bs>',
-            },
-         },
-      }
-   end,
+            'terraform',
+         }
+
+         -- Enable treesitter highlighting, indentation, and folding for all buffers with a parser
+         vim.api.nvim_create_autocmd('FileType', {
+            callback = function(args)
+               if pcall(vim.treesitter.start, args.buf) then
+                  vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                  vim.wo[0][0].foldmethod = 'expr'
+                  vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+               end
+            end,
+         })
+      end,
+   },
+
+   -- autotagging for html/jsx
+   {
+      'windwp/nvim-ts-autotag',
+      event = { 'BufReadPre', 'BufNewFile' },
+      opts = {},
+   },
 }
